@@ -1,0 +1,47 @@
+# Criação das pastas
+mkdir src
+mkdir dist
+touch
+
+# React
+npm i react react-dom
+npm i babel-preset-react
+npm install react-redux
+npm install @types/react-redux
+npm install --save @types/react
+
+
+
+# Typescript
+npm install -g typescript
+
+# ESlint
+npm i --save-dev eslint-webpack-plugin
+npm install eslint-plugin-import --save-dev
+
+# Babel
+npm i @babel/core babel-loader @babel/preset-env @babel/preset-react --save-dev
+npm install --save-dev babel-plugin-styled-components
+npm install --save-dev babel-plugin-inline-react-svg //Para o babel do storybook
+
+touch babel.config.json
+npm install --save-dev @babel/preset-typescript
+
+# Webpack
+npm i webpack webpack-cli webpack-dev-server --save-dev
+touch webpack.config.js
+npm i html-webpack-plugin --save-dev
+npm i tsconfig-paths-webpack-plugin
+npm i svg-url-loader --save-dev
+npm install @svgr/webpack --save-dev //Svg como componente
+npm i clean-terminal-webpack-plugin
+
+# Prettier
+
+# Storybook
+npx sb init
+
+# Styled-components
+npm install --save @types/styled-components
+npm install --save styled-components
+npm install --save-dev babel-plugin-styled-components

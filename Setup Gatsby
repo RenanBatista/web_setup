@@ -1,0 +1,109 @@
+**** GATSBY
+
+packages:
+- npm install --save styled-components
+- npm i @types/styled-components
+- npm install --save-dev @types/react @types/react-dom @types/node
+- npm install gatsby-plugin-styled-components styled-components babel-plugin-styled-components
+
+## Storybook
+https://www.gatsbyjs.com/docs/how-to/testing/visual-testing-with-storybook/
+
+install storybook:
+`npx -p @storybook/cli sb init`
+
+npm i @storybook/addon-viewport
+
+
+## Eslint configuration
+O gatssby já acompanha uma configuração do Eslint por padrão, porém épossivel realizar a configuração personalizada.
+
+https://www.gatsbyjs.com/docs/how-to/custom-configuration/eslint/
+
+```shell
+$ npm install --save-dev eslint-config-react-app
+$ touch .eslintrc
+```
+
+Add to .eslintrc file
+``'javascript
+module.exports = {
+  globals: {
+    __PATH_PREFIX__: true,
+  },
+  extends: `react-app`,
+}
+```
+
+## Babel
+npm install --save-dev babel-preset-gatsby
+npm install --save-dev @babel/preset-typescript
+
+
+- PLugins:
+https://github.com/styled-components/babel-plugin-styled-components
+npm install --save-dev babel-plugin-styled-components
+
+
+## Eslint
+
+npm install eslint-plugin-react-hooks --save-dev
+npm install --save-dev eslint-config-prettier <---------- Put it last to override other configs
+npm install eslint-plugin-react --save-dev
+
+
+## Typescrip
+
+O Typescript funciona com o Gatsby apartir da versão 3.0.0
+
+
+
+
+
+
+module.exports = {
+  stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
+  addons: ["@storybook/addon-links", "@storybook/addon-essentials"],
+  webpackFinal: async config => {
+    // Transpile Gatsby module because Gatsby includes un-transpiled ES6 code.
+    config.module.rules[0].exclude = [/node_modules\/(?!(gatsby)\/)/]
+
+    // use installed babel-loader which is v8.0-beta (which is meant to work with @babel/core@7)
+    config.module.rules[0].use[0].loader = require.resolve("babel-loader")
+
+    // use @babel/preset-react for JSX and env (instead of staged presets)
+    config.module.rules[0].use[0].options.presets = [
+      require.resolve("@babel/preset-react"),
+      require.resolve("@babel/preset-env"),
+    ]
+
+    config.module.rules[0].use[0].options.plugins = [
+      // use @babel/plugin-proposal-class-properties for class arrow functions
+      require.resolve("@babel/plugin-proposal-class-properties"),
+      // use babel-plugin-remove-graphql-queries to remove static queries from components when rendering in storybook
+      require.resolve("babel-plugin-remove-graphql-queries"),
+    ]
+
+    // Prefer Gatsby ES6 entrypoint (module) over commonjs (main) entrypoint
+    config.resolve.mainFields = ["browser", "module", "main"]
+
+    config.module.rules.push({
+      test: /\.(ts|tsx)$/,
+      loader: require.resolve("babel-loader"),
+      options: {
+        presets: [["react-app", { flow: false, typescript: true }]],
+        plugins: [
+          require.resolve("@babel/plugin-proposal-class-properties"),
+          // use babel-plugin-remove-graphql-queries to remove static queries from components when rendering in storybook
+          require.resolve("babel-plugin-remove-graphql-queries"),
+          require.resolve("@babel/plugin-preset-typescript"),
+        ],
+      },
+    })
+    config.resolve.extensions.push(".ts", ".tsx")
+
+    return config
+  },
+}
+
+
